@@ -89,6 +89,10 @@ class Predictor(BasePredictor):
             default=30,
             description="The maximum number of words to generate in each window",
         ),
+        highlight_color: str = Input(
+            default="#39E508",
+            description="The color of the highlight for the captioned text",
+        ),
         model: str = Input(
             choices=[
                 "large-v3",
@@ -226,7 +230,8 @@ class Predictor(BasePredictor):
         # run bun rendering command to render the video with the subtitles
         props = {
             "video": hash + ".mp4",
-            "caption_size": caption_size,
+            "captionSize": caption_size,
+            "highlightColor": highlight_color,
         }
 
         render_command = f"/root/.bun/bin/bunx remotion render --concurrency='90%' --props='{json.dumps(props)}' CaptionedVideo out/{hash}_captioned.mp4"

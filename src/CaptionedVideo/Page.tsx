@@ -21,7 +21,6 @@ const container: React.CSSProperties = {
   height: 150,
 };
 
-const HIGHLIGHT_COLOR = "#39E508";
 
 export const Page: React.FC<{
   readonly enterProgress: number;
@@ -33,6 +32,7 @@ export const Page: React.FC<{
 
   const inputProps = getInputProps()
   const DESIRED_FONT_SIZE = inputProps.captionSize as number;
+  const HIGHLIGHT_COLOR = inputProps.highlightColor as string;
 
   const fittedText = fitText({
     fontFamily,
