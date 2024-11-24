@@ -9,10 +9,9 @@ import hashlib
 import json
 from pathlib import Path
 
-from cog import BasePredictor, Input, Path, BaseModel, emit_metric
+from cog import BasePredictor, Input, Path
 from whisper.model import Whisper, ModelDimensions
 from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
-from whisper.utils import format_timestamp
 
 MODEL_CACHE = "weights"
 BASE_URL = f"https://weights.replicate.delivery/default/whisper-v3/{MODEL_CACHE}/"
@@ -196,7 +195,6 @@ class Predictor(BasePredictor):
         detected_language_code = result["language"]
         detected_language_name = LANGUAGES.get(detected_language_code, detected_language_code)
 
-        emit_metric("audio_duration", duration)
         print(f"Detected language: {detected_language_name}")
 
         formatted_results = format_whisper_results(result)
