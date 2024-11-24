@@ -8,6 +8,7 @@ import ffmpeg
 import hashlib
 import json
 from pathlib import Path
+import shutil
 
 from cog import BasePredictor, Input, Path
 from whisper.model import Whisper, ModelDimensions
@@ -210,7 +211,17 @@ class Predictor(BasePredictor):
 
         # copy the video file to the /src/public directory
         video_file = f"/src/public/{hash}.mp4"
-        os.system(f"cp {str(video)} {video_file}")
+        target_dir = os.path.dirname(video_file)
+        
+        # Ensure source exists
+        if not os.path.exists(str(video)):
+            raise FileNotFoundError(f"Source video not found: {video}")
+            
+        # Create target directory
+        os.makedirs(target_dir, exist_ok=True)
+    
+        # Copy with error handling
+        shutil.copy2(str(video), video_file)
 
         # run bun rendering command to render the video with the subtitles
         props = {
@@ -218,7 +229,7 @@ class Predictor(BasePredictor):
             "caption_size": caption_size,
         }
 
-        render_command = f"/root/.bun/bin/bunx remotion render --props='{json.dumps(props)}' CaptionedVideo out/{hash}_captioned.mp4"
+        render_command = f"/root/.bun/bin/bunx remotion render --concurrency='90%' --props='{json.dumps(props)}' CaptionedVideo out/{hash}_captioned.mp4"
         print(f"Running render command: {render_command}")
         subprocess.run(['bash', '-c', render_command], check=True)
 
