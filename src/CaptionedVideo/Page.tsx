@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AbsoluteFill,
+  getInputProps,
   interpolate,
   useCurrentFrame,
   useVideoConfig,
@@ -16,11 +17,10 @@ const container: React.CSSProperties = {
   justifyContent: "center",
   alignItems: "center",
   top: undefined,
-  bottom: 350,
+  bottom: "10%",
   height: 150,
 };
 
-const DESIRED_FONT_SIZE = 120;
 const HIGHLIGHT_COLOR = "#39E508";
 
 export const Page: React.FC<{
@@ -30,6 +30,9 @@ export const Page: React.FC<{
   const frame = useCurrentFrame();
   const { width, fps } = useVideoConfig();
   const timeInMs = (frame / fps) * 1000;
+
+  const inputProps = getInputProps()
+  const DESIRED_FONT_SIZE = inputProps.captionSize as number;
 
   const fittedText = fitText({
     fontFamily,
@@ -46,7 +49,7 @@ export const Page: React.FC<{
         style={{
           fontSize,
           color: "white",
-          WebkitTextStroke: "20px black",
+          WebkitTextStroke: "5px black",
           paintOrder: "stroke",
           transform: makeTransform([
             scale(interpolate(enterProgress, [0, 1], [0.8, 1])),
