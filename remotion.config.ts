@@ -8,5 +8,4 @@ import { Config } from "@remotion/cli/config";
 Config.setVideoImageFormat("jpeg");
 Config.setOverwriteOutput(true);
 Config.setVideoBitrate("1M");
-Config.setConcurrency(4);
 Config.setAudioBitrate("128k");
